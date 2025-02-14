@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Question</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #ff4b4b;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        #yesBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #noBtn {
+            background-color: #ff4b4b;
+            color: white;
+        }
+        #yesBtn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        #noBtn:hover {
+            background-color: #ff3b3b;
+        }
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="container">
+        <h1>Will you be my Valentine May Thway Ni? ❤️</h1>
+        <div class="buttons">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        let noCount = 0;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const container = document.querySelector('.container');
+
+        // Initial size for the Yes button
+        let yesBtnSize = 1;
+
+        noBtn.addEventListener('click', () => {
+            noCount++;
+            yesBtnSize += 0.5;
+            
+            // Make the Yes button bigger
+            yesBtn.style.transform = `scale(${yesBtnSize})`;
+            
+            // Change the No button text
+            const phrases = [
+                "Are you sure?",
+                "Really sure?",
+                "Think again!",
+                "Last chance!",
+                "Surely not?",
+                "You might regret this!",
+                "Give it another thought!",
+                "Are you absolutely sure?",
+                "This could be a mistake!",
+                "Have a heart!"
+            ];
+            
+            noBtn.textContent = phrases[Math.min(noCount - 1, phrases.length - 1)];
+            
+            // Move the No button to a random position
+            const maxX = container.clientWidth - noBtn.clientWidth;
+            const maxY = container.clientHeight - noBtn.clientHeight;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+
+        yesBtn.addEventListener('click', () => {
+            // Remove the No button
+            noBtn.remove();
+            
+            // Change the heading text
+            document.querySelector('h1').textContent = "Yay! Happy Valentine's Day! ❤️";
+            
+            // Reset the Yes button
+            yesBtn.style.transform = 'scale(1)';
+            yesBtn.textContent = "I Love You! ❤️";
+            
+            // Create heart animation
+            createHearts();
+        });
+
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'fixed';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.animation = 'float 4s linear';
+                document.getElementById('hearts').appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            }, 100);
+        }
+
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                @keyframes float {
+                    to {
+                        transform: translateY(-100vh) rotate(360deg);
+                    }
+                }
+            </style>
+        `);
+    </script>
+</body>
+</html>
